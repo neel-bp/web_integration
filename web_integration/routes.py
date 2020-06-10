@@ -28,4 +28,17 @@ def patient(patient_id):
         if r.status_code != 200:
             abort(500)
         patient_data = r.json()
-        return render_template('patient.html')
+        try:
+            address = patient_data['address']
+            address = f'{address["country"]} {patient_data["city"]} {patient_data["street"]}'
+        except:
+            address = ""
+        return render_template('patient.html', patient_data=patient_data, title=f'{patient_data["name"]} {patient_data["surname"]}', rest_link=rest_link, time_con=time_con, address=address, breadcrumb_title=f'{patient_data["name"]} profile')
+
+@app.route('/doctors', methods=['GET'])
+def doctors():
+    r = requests.get(f'{rest_link}/doctors')
+    if r.status_code != 200:
+        abort(500)
+    doctor_list = r.json()
+    return render_template('doctors.html',title='Doctors',page_title='Doctors',breadcrumb_title='Doctors',doctor_list=doctor_list, time_con=time_con,rest_link=rest_link)
