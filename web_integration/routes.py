@@ -1,5 +1,5 @@
 from web_integration import app, rest_link
-from flask import render_template, abort, request
+from flask import render_template, abort, request, flash, redirect, url_for
 import requests
 from web_integration.utilfuncs import time_con
 
@@ -34,6 +34,28 @@ def patient(patient_id):
         except:
             address = ""
         return render_template('patient.html', patient_data=patient_data, title=f'{patient_data["name"]} {patient_data["surname"]}', rest_link=rest_link, time_con=time_con, address=address, breadcrumb_title=f'{patient_data["name"]} profile')
+    
+    elif request.method == 'POST':
+        # form = request.form
+        # print(type(form))
+        # print(type(dict(form)))
+        # return f'<h4>{str(dict(form))}</h4>'
+        payload = dict(request.form)
+  
+        for pl in list(payload.keys()):
+            if payload[pl] == '':
+                payload.pop(pl, None)
+
+        r = requests.put(f'{rest_link}/patients/{patient_id}', json=payload)
+        if r.status_code != 200:
+            print(f'{r.status_code} {payload}')
+            flash('Profile update failed', 'danger')
+            return redirect(url_for('patient',patient_id=patient_id))
+        else:
+            flash('Profile successfully updated', 'success')
+            return redirect(url_for('patient',patient_id=patient_id))
+    
+            
 
 @app.route('/doctors', methods=['GET'])
 def doctors():
