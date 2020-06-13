@@ -10,8 +10,9 @@
         <div class="col-lg-4 col-xlg-3 col-md-5">
             <div class="card">
                 <div class="card-body">
-                    <center class="m-t-30"> <img id="profile_pic" src="{{rest_link}}/patients/{{patient_data['id']}}/pic" class="rounded-circle" width="150">
-                        <h4 class="card-title m-t-10">{{patient_data['name']}} {{patient_data['surname']}}</h4>
+                    <center class="m-t-30"> <img id="profile_pic" src="{{rest_link}}/doctors/{{doctor_data['id']}}/pic" class="rounded-circle" width="150">
+                        <h4 class="card-title m-t-10">{{doctor_data['name']}} {{doctor_data['surname']}}</h4>
+                        <h6 class="card-subtitle">{{ doctor_data['specialization'] }}</h6>
                         <div class="row text-center justify-content-md-center">
                             <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-people"></i> <font class="font-medium">254</font></a></div>
                             <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-picture"></i> <font class="font-medium">54</font></a></div>
@@ -20,15 +21,28 @@
                 </div>
                 <div>
                     <hr> </div>
-                <div class="card-body"> <small class="text-muted">Email address </small>
-                    <h6>{{patient_data['email']}}</h6>
+                <div class="card-body">
+                    <small class="text-muted">About</small>
+                    <h6>{{doctor_data['about']}}</h6> 
+                    <small class="text-muted">Email address </small>
+                    <h6>{{doctor_data['email']}}</h6>
                     <small class="text-muted">Gender </small>
-                    <h6>{{patient_data['gender']}}</h6> <small class="text-muted p-t-30 db">Phone</small>
-                    <h6>{{patient_data['phone']}}</h6> <small class="text-muted p-t-30 db">Address</small>
+                    <h6>{{doctor_data['gender']}}</h6> 
+                    <small class="text-muted p-t-30 db">Phone</small>
+                    <h6>{{doctor_data['phone']}}</h6> 
+                    <small class="text-muted p-t-30 db">Address</small>
                     <h6>{{adress}}</h6><small class="text-muted">Username</small>
-                    <h6>{{patient_data['username']}}</h6>
+                    <h6>{{doctor_data['username']}}</h6>
                     <small class="text-muted">Signup Date </small>
-                    <h6>{{time_con(patient_data['signup_date'])}}</h6>
+                    <h6>{{time_con(doctor_data['signup_date'])}}</h6>
+                    <small class="text-muted">Experience</small>
+                    <h6>{{doctor_data['experience']}}</h6>
+                    <small class="text-muted">Pmdc Verified</small>
+                    <h6>{{doctor_data['pmdc_verified']}}</h6>
+                    <small class="text-muted">Pmdc Registry Number</small>
+                    <h6>{{doctor_data['pmdc_reg_num']}}</h6>
+                    <small class="text-muted">Verification Status</small>
+                    <h6>{{doctor_data['verification_status']}}</h6>
                     <br>
                 </div>
             </div>

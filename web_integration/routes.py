@@ -36,10 +36,6 @@ def patient(patient_id):
         return render_template('patient.html', patient_data=patient_data, title=f'{patient_data["name"]} {patient_data["surname"]}', rest_link=rest_link, time_con=time_con, address=address, breadcrumb_title=f'{patient_data["name"]} profile')
     
     elif request.method == 'POST':
-        # form = request.form
-        # print(type(form))
-        # print(type(dict(form)))
-        # return f'<h4>{str(dict(form))}</h4>'
         payload = dict(request.form)
   
         for pl in list(payload.keys()):
@@ -64,3 +60,35 @@ def doctors():
         abort(500)
     doctor_list = r.json()
     return render_template('doctors.html',title='Doctors',page_title='Doctors',breadcrumb_title='Doctors',doctor_list=doctor_list, time_con=time_con,rest_link=rest_link)
+
+@app.route('/doctors/<doctor_id>', methods=['GET','POST'])
+def doctor(doctor_id):
+    if request.method == 'GET':
+        r = requests.get(f'{rest_link}/doctors/{doctor_id}')
+        if r.status_code == 404:
+            abort(404)
+        if r.status_code != 200:
+            abort(500)
+        doctor_data = r.json()
+        try:
+            address = doctor_data['address']
+            address = f'{address["country"]} {doctor_data["city"]} {doctor_data["street"]}'
+        except:
+            address = ""
+        return render_template('doctor.html', doctor_data=doctor_data, title=f'{doctor_data["name"]} {doctor_data["surname"]}', rest_link=rest_link, time_con=time_con, address=address, breadcrumb_title=f'{doctor_data["name"]} profile')
+    
+    elif request.method == 'POST':
+        payload = dict(request.form)
+  
+        for pl in list(payload.keys()):
+            if payload[pl] == '':
+                payload.pop(pl, None)
+
+        r = requests.put(f'{rest_link}/doctors/{doctor_id}', json=payload)
+        if r.status_code != 200:
+            print(f'{r.status_code} {payload}')
+            flash('Profile update failed', 'danger')
+            return redirect(url_for('doctor',doctor_id=doctor_id))
+        else:
+            flash('Profile successfully updated', 'success')
+            return redirect(url_for('doctor',doctor_id=doctor_id))

@@ -10,7 +10,7 @@
 <div class="comment-widgets">
     <!-- Comment Row -->
     {% for d in doctor_list %}
-    <a href="/patients/{{d['id']}}">
+    <a href="/doctors/{{d['id']}}">
     <div class="d-flex flex-row comment-row mt-0">
         <div class="p-2"><img src="{{url_for('static', filename='assets/images/users/1.jpg')}}" alt="user" width="50" class="rounded-circle"></div>
         <div class="comment-text w-100">
