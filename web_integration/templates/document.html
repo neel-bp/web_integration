@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <!-- Row -->
+    <div class="row">
+        <!-- Column -->
+        <div class="col-lg-4 col-xlg-3 col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-center"> <img id="profile_pic" src="{{rest_link}}/documents/{{document_data['id']}}/pic" width="300">
+                       
+                    </div>
+                </div>                
+            </div>
+        </div>
+        <!-- Column -->
+
+        <div class="col-lg-8 col-xlg-9 col-md-7">
+            <div class="card">
+                <div class="card-body">
+                    <small class="text-muted">Email address </small>
+                    <h6>placeholder@yahoo.com</h6>
+                    <small class="text-muted">Gender </small>
+                    <h6>female</h6> <small class="text-muted p-t-30 db">Phone</small>
+                    <h6>123456 789</h6> <small class="text-muted">Username</small>
+                    <h6>babadingoo</h6>
+                    <small class="text-muted">Signup Date </small>
+                    <h6>10-10-2020</h6>
+                    <br>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+    $('#profile_pic').on("error", function() {
+  $(this).attr('src', "{{url_for('static', filename='assets/images/users/futa.jpg')}}");
+});
+    </script>
+    <!-- Row -->
+    <!-- ============================================================== -->
+    <!-- End PAge Content -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Right sidebar -->
+    <!-- ============================================================== -->
+    <!-- .right-sidebar -->
+    <!-- ============================================================== -->
+    <!-- End Right sidebar -->
+    <!-- ============================================================== -->
+
+
+{% endblock content %}

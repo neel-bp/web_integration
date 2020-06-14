@@ -3,10 +3,12 @@ from flask import render_template, abort, request, flash, redirect, url_for
 import requests
 from web_integration.utilfuncs import time_con
 
+# test routes
 @app.route('/',methods=['GET','POST'])
 def home():
     return render_template('hello.html')
 
+# test routes
 @app.route('/starter',methods=['GET','POST'])
 def starter():
     return render_template('starter-kit.html', title='Starter', page_title='Starter Page', breadcrumb_title='starter')
@@ -92,3 +94,22 @@ def doctor(doctor_id):
         else:
             flash('Profile successfully updated', 'success')
             return redirect(url_for('doctor',doctor_id=doctor_id))
+
+@app.route('/documents', methods=['GET'])
+def documents():
+    r = requests.get(f'{rest_link}/documents')
+    if r.status_code != 200:
+        abort(500)
+    document_list = r.json()
+    return render_template('documents.html',title='documents',page_title='documents',breadcrumb_title='documents',document_list=document_list, time_con=time_con,rest_link=rest_link)
+
+@app.route('/doctors/<doctor_id>/documents/<document_id>', methods=['GET','POST'])
+def document(document_id, doctor_id):
+    if request.method == 'GET':
+        r = requests.get(f'{rest_link}/doctors/{doctor_id}/documents/{document_id}')
+        if r.status_code == 404:
+            abort(404)
+        if r.status_code != 200:
+            abort(500)
+        document_data = r.json()
+        return render_template('document.html', document_data=document_data, title=f'{document_data["title"]}', rest_link=rest_link, time_con=time_con, breadcrumb_title=f'{document_data["title"]}')
