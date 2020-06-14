@@ -2,6 +2,7 @@ from web_integration import app, rest_link
 from flask import render_template, abort, request, flash, redirect, url_for
 import requests
 from web_integration.utilfuncs import time_con
+from datetime import datetime
 
 # test routes
 @app.route('/',methods=['GET','POST'])
@@ -112,4 +113,23 @@ def document(document_id, doctor_id):
         if r.status_code != 200:
             abort(500)
         document_data = r.json()
-        return render_template('document.html', document_data=document_data, title=f'{document_data["title"]}', rest_link=rest_link, time_con=time_con, breadcrumb_title=f'{document_data["title"]}')
+        return render_template('document.html', document_data=document_data, title=f'{document_data["title"]}', rest_link=rest_link, time_con=time_con, breadcrumb_title=f'{document_data["title"]}', str=str)
+    elif request.method == 'POST':
+        payload = dict(request.form)
+        for pl in list(payload):
+            if payload[pl] == '':
+                payload.pop(pl, None)
+
+        old_date = payload['verification_date']
+        new_date = datetime.strptime(old_date,"%a, %d %b %Y %H:%M:%S %Z")
+        payload['verification_date'] = new_date.isoformat()
+        r = requests.put(f'{rest_link}/doctors/{doctor_id}/documents/{document_id}', json=payload)
+        if r.status_code != 200:
+            flash('Document update failed', 'danger')
+            return redirect(url_for('document', document_id=document_id, doctor_id=doctor_id))
+        else:
+            flash('Document Updated Successfully', 'success')
+            return redirect(url_for('document', document_id=document_id, doctor_id=doctor_id))
+        
+        
+        return redirect(url_for('document', document_id=document_id, doctor_id=doctor_id))
