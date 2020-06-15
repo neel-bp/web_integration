@@ -1,0 +1,6 @@
+dashboard
+reviews
+prescription
+interaction
+doctor document link in doctor page
+search bar
